@@ -3,65 +3,52 @@
 @section('title', 'Login — Karsa Studio')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-6 py-16">
-    <div class="max-w-md mx-auto">
-    <div class="mb-10 text-center">
-        <span class="inline-flex items-center rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.25em] text-zinc-500">Masuk Akun</span>
-        <h1 class="text-5xl md:text-6xl font-extralight tracking-tight text-white mt-6 leading-[1.05]">Login</h1>
-        <p class="text-zinc-400 text-sm mt-5 leading-relaxed">Masuk untuk melanjutkan checkout dan mengakses riwayat order Anda.</p>
-    </div>
-
-    <div class="border border-zinc-900 bg-zinc-950 p-8 rounded-lg">
-        @if($errors->any())
-            <div class="mb-6 rounded-lg border border-rose-900/50 bg-rose-950/30 px-4 py-3 text-xs text-rose-200">
-                {{ $errors->first() }}
+<div class="max-w-6xl mx-auto px-6 py-20">
+    <div class="max-w-sm mx-auto animate-fade-up">
+        <div class="mb-10 text-center">
+            <div class="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-neutral-900 shadow-md mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
             </div>
-        @endif
+            <h1 class="text-3xl font-bold tracking-tight mb-2 text-neutral-900">Selamat Datang</h1>
+            <p class="text-neutral-500 text-sm">Masuk untuk melanjutkan checkout dan riwayat order.</p>
+        </div>
 
-        <form action="{{ route('login') }}" method="POST" class="space-y-5">
-            @csrf
+        <div class="clean-card p-7 rounded-xl bg-white border-neutral-100 shadow-sm">
+            @if($errors->any())
+                <div class="mb-5 badge-danger rounded-lg px-4 py-3 text-xs font-semibold">
+                    {{ $errors->first() }}
+                </div>
+            @endif
 
-            <div>
-                <label for="email" class="block text-[10px] tracking-wider uppercase text-zinc-400 font-semibold mb-2">Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    value="{{ old('email') }}"
-                    required
-                    autofocus
-                    placeholder="nama@email.com"
-                    class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 transition-colors"
-                >
-            </div>
+            <form action="{{ route('login') }}" method="POST" class="space-y-4">
+                @csrf
+                <div>
+                    <label for="email" class="block text-xs font-bold text-neutral-700 mb-1.5">Email</label>
+                    <input type="email" name="email" id="email" value="{{ old('email') }}" required autofocus placeholder="nama@email.com" class="w-full input-clean bg-neutral-50 border-neutral-200 text-sm">
+                </div>
 
-            <div>
-                <label for="password" class="block text-[10px] tracking-wider uppercase text-zinc-400 font-semibold mb-2">Password</label>
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    required
-                    placeholder="Minimal 8 karakter"
-                    class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 transition-colors"
-                >
-            </div>
+                <div>
+                    <label for="password" class="block text-xs font-bold text-neutral-700 mb-1.5">Password</label>
+                    <input type="password" name="password" id="password" required placeholder="Minimal 8 karakter" class="w-full input-clean bg-neutral-50 border-neutral-200 text-sm">
+                </div>
 
-            <label class="flex items-center gap-3 text-xs text-zinc-400">
-                <input type="checkbox" name="remember" class="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-zinc-50 focus:ring-zinc-500">
-                Ingat saya
-            </label>
+                <label class="flex items-center gap-2.5 text-xs text-neutral-600 cursor-pointer">
+                    <input type="checkbox" name="remember" class="h-4 w-4 rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900">
+                    Ingat saya
+                </label>
 
-            <button type="submit" class="w-full bg-zinc-50 hover:bg-zinc-200 text-zinc-950 text-xs font-semibold py-3.5 rounded-lg tracking-widest transition-all duration-200 uppercase">
-                Login
-            </button>
-        </form>
+                <button type="submit" class="w-full btn-primary py-3 text-sm font-bold mt-2">
+                    Login
+                </button>
+            </form>
 
-        <p class="mt-6 text-center text-xs text-zinc-500">
-            Belum punya akun?
-            <a href="{{ route('register') }}" class="text-zinc-200 hover:text-white font-medium">Daftar sekarang</a>
-        </p>
-    </div>
+            <p class="mt-6 text-center text-xs text-neutral-500">
+                Belum punya akun?
+                <a href="{{ route('register') }}" class="text-neutral-900 hover:underline font-bold transition-all">Daftar sekarang</a>
+            </p>
+        </div>
     </div>
 </div>
 @endsection

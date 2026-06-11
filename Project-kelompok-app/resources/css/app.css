@@ -6,6 +6,146 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* ===== ROOT VARS — Light Minimalist ===== */
+:root {
+    --bg-base: #faf9f6; /* Putih tulang */
+    --bg-surface: #ffffff;
+    --bg-elevated: #ffffff;
+    --text-main: #171717;
+    --text-muted: #525252;
+    --border-subtle: rgba(0, 0, 0, 0.08);
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-main);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb {
+    background: #e5e5e5;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: #d4d4d4; }
+
+/* ===== KEYFRAMES ===== */
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes float-soft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* ===== ANIMATION CLASSES ===== */
+.animate-fade-up { animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-up-d1 { animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+.animate-fade-up-d2 { animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+.animate-fade-up-d3 { animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both; }
+
+/* ===== GLASS NAV ===== */
+.glass-nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* ===== CARD ===== */
+.clean-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clean-card:hover {
+    border-color: rgba(0, 0, 0, 0.12);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+    background-color: #171717;
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+    background-color: #000000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--text-main);
+    font-weight: 600;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* ===== INPUTS ===== */
+.input-clean {
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    border-radius: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.input-clean::placeholder {
+    color: var(--text-muted);
+}
+
+.input-clean:focus {
+    outline: none;
+    border-color: #171717;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+/* ===== BADGES ===== */
+.badge-soft {
+    background-color: rgba(0, 0, 0, 0.04);
+    color: var(--text-muted);
+    font-weight: 600;
+    border: 1px solid var(--border-subtle);
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.badge-success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    color: #16a34a;
 }

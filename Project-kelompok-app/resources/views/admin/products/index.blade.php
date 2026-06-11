@@ -3,58 +3,66 @@
 @section('title', 'Kelola Katalog — Karsa Studio')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-6 py-16">
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+<div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
+
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 animate-fade-up">
         <div>
-            <span class="inline-flex items-center rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.25em] text-zinc-500">Admin</span>
-            <h1 class="text-5xl md:text-6xl font-extralight tracking-tight text-white mt-6 leading-[1.05]">
-                Kelola <span class="font-normal text-zinc-400">Katalog</span>
+            <span class="inline-flex items-center gap-2 rounded-lg bg-neutral-100 border border-neutral-200 px-3 py-1.5 mb-4">
+                <span class="h-1.5 w-1.5 rounded-full bg-neutral-900"></span>
+                <span class="text-[10px] uppercase tracking-widest font-bold text-neutral-600">Admin Panel</span>
+            </span>
+            <h1 class="text-4xl font-bold tracking-tight text-neutral-900">
+                Kelola <span class="text-neutral-500">Katalog</span>
             </h1>
-            <p class="text-zinc-400 text-sm md:text-base leading-relaxed font-light max-w-2xl mt-5">
+            <p class="text-neutral-500 text-sm mt-3 max-w-lg">
                 Halaman khusus untuk melihat, mengedit, dan menghapus produk katalog Karsa Studio.
             </p>
         </div>
-
-        <a href="{{ route('admin.products.create') }}" class="inline-flex justify-center bg-zinc-50 hover:bg-zinc-200 text-zinc-950 text-xs font-semibold py-3.5 px-6 rounded-lg tracking-widest transition-all duration-200 uppercase">
+        <a href="{{ route('admin.products.create') }}" class="btn-primary py-3.5 px-6 text-sm font-bold shadow-sm hover:shadow-md">
             Tambah Katalog
         </a>
     </div>
 
     @if(session('status_message'))
-        <div class="mb-8 p-4 bg-emerald-950/30 border border-emerald-900/50 text-emerald-300 text-xs rounded-lg tracking-wide">
+        <div class="mb-8 badge-success rounded-lg px-4 py-3 text-xs font-semibold animate-fade-up">
             {{ session('status_message') }}
         </div>
     @endif
 
-    <section class="border border-zinc-900 bg-zinc-950 rounded-lg overflow-hidden">
+    <section class="clean-card bg-white border-neutral-100 shadow-sm overflow-hidden animate-fade-up-d1">
         @if($products->isEmpty())
             <div class="p-10 text-center">
-                <h2 class="text-2xl font-semibold text-white mb-3">Belum ada produk katalog</h2>
-                <p class="text-zinc-400 text-sm">Tambahkan katalog baru agar produk tampil di halaman user.</p>
+                <div class="mb-5 mx-auto w-14 h-14 rounded-xl bg-neutral-50 border border-neutral-200 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-neutral-900 mb-2">Belum ada produk katalog</h2>
+                <p class="text-neutral-500 text-sm">Tambahkan katalog baru agar produk tampil di halaman user.</p>
             </div>
         @else
-            <div class="divide-y divide-zinc-900">
+            <div class="divide-y divide-neutral-100">
                 @foreach($products as $product)
-                    <div class="p-6 flex flex-col md:flex-row md:items-center gap-5">
-                        <img src="{{ asset($product->image_path) }}" alt="{{ $product->name }}" class="w-full md:w-40 aspect-[16/10] object-cover rounded-lg border border-zinc-800 bg-zinc-900">
+                    <div class="p-6 flex flex-col md:flex-row md:items-center gap-5 hover:bg-neutral-50 transition-colors">
+                        <div class="relative overflow-hidden rounded-lg border border-neutral-200 group bg-neutral-100">
+                            <img src="{{ asset($product->image_path) }}" alt="{{ $product->name }}" class="w-full md:w-40 aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
 
                         <div class="flex-1 min-w-0">
-                            <h3 class="text-lg font-semibold text-white">{{ $product->name }}</h3>
-                            <p class="text-[10px] text-zinc-500 mt-1">{{ $product->slug }}</p>
-                            <p class="text-sm text-zinc-400 leading-relaxed mt-3 line-clamp-2">{{ $product->description }}</p>
+                            <h3 class="text-lg font-bold text-neutral-900">{{ $product->name }}</h3>
+                            <p class="text-[11px] text-neutral-500 mt-1 font-mono bg-neutral-100 px-2 py-0.5 rounded inline-block">{{ $product->slug }}</p>
+                            <p class="text-sm text-neutral-600 leading-relaxed mt-3 line-clamp-2">{{ $product->description }}</p>
                         </div>
 
                         <div class="md:text-right shrink-0">
-                            <p class="text-xs text-zinc-500 mb-1">Harga</p>
-                            <p class="text-sm font-semibold text-white">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-1">Harga</p>
+                            <p class="text-lg font-bold text-blue-600">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                             <div class="mt-4 flex flex-col sm:flex-row md:justify-end gap-2">
-                                <a href="{{ route('admin.products.edit', $product) }}" class="inline-flex justify-center bg-zinc-900 hover:bg-zinc-800 text-white text-[10px] font-semibold py-2.5 px-4 rounded-lg border border-zinc-800 tracking-widest transition-all duration-200 uppercase">
+                                <a href="{{ route('admin.products.edit', $product) }}" class="btn-outline text-xs font-bold py-2.5 px-5 text-center">
                                     Edit
                                 </a>
                                 <form action="{{ route('admin.products.destroy', $product) }}" method="POST" onsubmit="return confirm('Hapus produk ini dari katalog user?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-full inline-flex justify-center bg-rose-950/50 hover:bg-rose-900 text-rose-300 text-[10px] font-semibold py-2.5 px-4 rounded-lg border border-rose-900/60 tracking-widest transition-all duration-200 uppercase">
+                                    <button type="submit" class="w-full badge-danger text-xs font-bold py-2.5 px-5 rounded-lg hover:bg-red-500 hover:text-white transition-colors">
                                         Hapus
                                     </button>
                                 </form>

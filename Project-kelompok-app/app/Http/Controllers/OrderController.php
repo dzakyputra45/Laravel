@@ -50,7 +50,21 @@ class OrderController extends Controller
             ->latest()
             ->get();
 
-        return view('orders.history', compact('orders'));
+        // Get unique products from successfully paid orders
+        $purchasedProducts = $orders->where('status', 'paid')
+            ->flatMap(function ($order) {
+                return $order->items->map(function ($item) {
+                    return $item->product;
+                });
+            })
+            ->unique('id')
+            ->values();
+
+        // Calculate account stats
+        $totalSpent = $orders->where('status', 'paid')->sum('total_price');
+        $totalItems = $purchasedProducts->count();
+
+        return view('orders.history', compact('orders', 'purchasedProducts', 'totalSpent', 'totalItems'));
     }
 
     /**

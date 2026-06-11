@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Karsa Studio — Minimalist Digital Assets Store')
+@section('title', 'Katalog — Karsa Studio')
 
 @section('content')
 @php
@@ -12,241 +12,228 @@
             'description' => $product->description,
             'price' => (float) $product->price,
             'imageUrl' => asset($product->image_path),
-            'format' => str_contains(strtolower($product->download_url), '.pdf') ? 'PDF digital siap unduh' : 'Arsip digital ZIP siap unduh',
+            'format' => str_contains(strtolower($product->download_url), '.pdf') ? 'PDF Document' : 'ZIP Archive',
             'benefits' => [
-                'Dirancang dengan estetika minimalis khas Karsa Studio.',
-                'File digital bisa digunakan setelah pembayaran berhasil.',
-                'Cocok untuk mempercantik dan merapikan workspace pribadi.',
+                'Didesain dengan estetika minimalis yang premium.',
+                'Akses digital instan setelah pembayaran.',
+                'Cocok untuk merapikan workspace pribadi.',
             ],
         ];
     })->values();
 @endphp
 
-<div class="max-w-6xl mx-auto px-6 py-16">
-    
-    <!-- Hero Banner -->
-    <div class="text-center max-w-4xl mx-auto mb-16 mt-6">
-        <span class="inline-flex items-center rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.25em] text-zinc-500 mb-7">
-            Katalog Digital
-        </span>
-        <h1 class="text-5xl md:text-6xl font-extralight tracking-tight text-white mb-6 leading-[1.05]">
-            Choose assets for a more intentional workspace.
+<div class="max-w-6xl mx-auto px-6 py-12 md:py-16">
+
+    {{-- Page Header --}}
+    <div class="text-center max-w-2xl mx-auto mb-14 animate-fade-up">
+        <h1 class="text-4xl sm:text-5xl font-light tracking-tight mb-5 leading-tight text-neutral-900">
+            Curated for <span class="font-bold">better workflows.</span>
         </h1>
-        <p class="text-zinc-400 text-sm md:text-base leading-relaxed font-light max-w-2xl mx-auto">
-            Buka detail produk terlebih dahulu untuk melihat deskripsi, harga, format file, dan manfaatnya sebelum lanjut checkout.
+        <p class="text-neutral-500 text-sm leading-relaxed">
+            Temukan aset digital premium untuk membantu Anda bekerja lebih fokus dan terorganisir.
         </p>
     </div>
 
-    <!-- Product Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        @foreach($products as $product)
-            <div class="group flex flex-col justify-between border border-zinc-900 bg-zinc-950 rounded-lg overflow-hidden hover:border-zinc-700 transition-all duration-300">
-                <div>
-                    <!-- Image Wrapper -->
-                    <div class="relative w-full aspect-[16/10] overflow-hidden bg-zinc-900 border-b border-zinc-900">
-                        <img 
-                            src="{{ asset($product->image_path) }}" 
-                            alt="{{ $product->name }}" 
-                            class="w-full h-full object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
-                        />
-                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    {{-- 2-Column Layout --}}
+    <div class="flex flex-col lg:flex-row gap-8 animate-fade-up-d1">
+
+        {{-- Sidebar --}}
+        <aside class="w-full lg:w-64 shrink-0">
+            <div class="clean-card p-6 sticky top-24 bg-white border-neutral-100 shadow-sm">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-sm font-bold text-neutral-900">Filter</h3>
+                    <button class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-neutral-900 transition-colors">Reset</button>
+                </div>
+
+                {{-- Kategori --}}
+                <div class="mb-8">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-4">Kategori</h4>
+                    <ul class="space-y-2.5">
+                        @foreach(['Semua Produk', 'Wallpapers', 'Icon Packs', 'Templates', 'UI Kits'] as $idx => $cat)
+                            <li>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <div class="w-4 h-4 rounded border flex items-center justify-center transition-all
+                                        {{ $idx === 0 ? 'border-neutral-900 bg-neutral-900' : 'border-neutral-300 bg-transparent group-hover:border-neutral-500' }}">
+                                        @if($idx === 0)
+                                            <svg class="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        @endif
+                                    </div>
+                                    <span class="text-sm {{ $idx === 0 ? 'text-neutral-900 font-semibold' : 'text-neutral-600 group-hover:text-neutral-900' }} transition-colors">{{ $cat }}</span>
+                                </label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                {{-- Harga --}}
+                <div class="mb-8">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-4">Harga</h4>
+                    <div class="flex items-center gap-2">
+                        <input type="text" placeholder="Min" class="input-clean text-xs w-full py-2 bg-neutral-50 border-neutral-200">
+                        <span class="text-neutral-400 text-xs">—</span>
+                        <input type="text" placeholder="Max" class="input-clean text-xs w-full py-2 bg-neutral-50 border-neutral-200">
                     </div>
-                    
-                    <div class="p-6">
-                        <!-- Metadata -->
-                        <div class="flex items-start justify-between gap-4 mb-3">
-                            <h2 class="text-xl font-semibold text-white tracking-tight group-hover:text-zinc-200 transition-colors">
-                                {{ $product->name }}
-                            </h2>
-                            <span class="text-xs font-semibold text-zinc-400 tracking-wide whitespace-nowrap">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}
-                            </span>
+                </div>
+
+                <button class="w-full btn-primary text-xs py-2.5 font-bold">Terapkan</button>
+            </div>
+        </aside>
+
+        {{-- Product Grid --}}
+        <main class="flex-1">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-neutral-200">
+                <span class="text-xs font-medium text-neutral-500">{{ $products->count() }} produk</span>
+                <select class="bg-transparent text-neutral-900 text-xs font-bold outline-none cursor-pointer">
+                    <option value="newest">Terbaru</option>
+                    <option value="popular">Terpopuler</option>
+                    <option value="price_asc">Harga ↑</option>
+                    <option value="price_desc">Harga ↓</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                @foreach($products as $idx => $product)
+                    <div class="group clean-card overflow-hidden flex flex-col bg-white border-neutral-100 shadow-sm">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-neutral-100 border-b border-neutral-100 cursor-pointer" onclick="openProductDetail('{{ $product->id }}')">
+                            <img src="{{ asset($product->image_path) }}" alt="{{ $product->name }}"
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+
+                            @if($idx % 3 === 0)
+                                <span class="absolute top-3 left-3 bg-neutral-900 text-white px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide shadow-md">-20%</span>
+                            @elseif($idx % 4 === 0)
+                                <span class="absolute top-3 left-3 bg-blue-600 text-white px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide">HOT</span>
+                            @endif
+
+                            {{-- Quick View Overlay --}}
+                            <div class="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                                <span class="bg-neutral-900 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform">Quick View</span>
+                            </div>
                         </div>
 
-                        <!-- Description -->
-                        <p class="text-zinc-400 font-light text-sm leading-relaxed mb-7">
-                            {{ \Illuminate\Support\Str::limit($product->description, 150) }}
-                        </p>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h2 class="text-sm font-bold text-neutral-900 group-hover:text-blue-600 transition-colors line-clamp-1 cursor-pointer" onclick="openProductDetail('{{ $product->id }}')">
+                                    {{ $product->name }}
+                                </h2>
+                                <div class="flex items-center gap-0.5 mt-2 mb-3">
+                                    @for($i=0; $i<5; $i++)
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 {{ $i < 4 || ($i==4 && $idx%2==0) ? 'text-amber-400' : 'text-neutral-200' }}" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    @endfor
+                                    <span class="text-[10px] font-medium text-neutral-400 ml-1">({{ rand(12, 145) }})</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-end justify-between mt-3">
+                                <div>
+                                    @if($idx % 3 === 0)
+                                        <del class="text-[11px] text-neutral-400">Rp {{ number_format($product->price * 1.2, 0, ',', '.') }}</del>
+                                    @endif
+                                    <div class="text-sm font-bold text-neutral-900">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                                </div>
+                                <button class="h-9 w-9 rounded-lg bg-neutral-50 border border-neutral-200 flex items-center justify-center text-neutral-600 hover:bg-neutral-900 hover:border-neutral-900 hover:text-white transition-all" aria-label="Add to cart">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Purchase Button Trigger -->
-                <button
-                    onclick="openProductDetail('{{ $product->id }}')"
-                    class="m-6 mt-0 text-center block bg-zinc-50 hover:bg-zinc-200 text-zinc-950 text-xs font-semibold py-3.5 rounded-lg tracking-widest transition-all duration-200 uppercase"
-                >
-                    Lihat Detail Produk
-                </button>
+                @endforeach
             </div>
-        @endforeach
-    </div>
-
-    <!-- Features Section (Why Us) -->
-    <div class="mt-20 grid grid-cols-1 md:grid-cols-3 border border-zinc-900 bg-zinc-950 rounded-lg overflow-hidden">
-        <div class="p-8 md:border-r border-zinc-900">
-            <h3 class="text-xl font-semibold text-white mb-3">Detail first</h3>
-            <p class="text-zinc-400 font-light text-sm leading-relaxed">
-                Setiap katalog menampilkan informasi produk sebelum user masuk ke proses pembayaran.
-            </p>
-        </div>
-        <div class="p-8 md:border-r border-zinc-900">
-            <h3 class="text-xl font-semibold text-white mb-3">Clean aesthetic</h3>
-            <p class="text-zinc-400 font-light text-sm leading-relaxed">
-                Produk dibuat dengan visual minimal agar workspace terasa lebih rapi dan fokus.
-            </p>
-        </div>
-        <div class="p-8">
-            <h3 class="text-xl font-semibold text-white mb-3">Saved orders</h3>
-            <p class="text-zinc-400 font-light text-sm leading-relaxed">
-                Order dari akun user tersimpan di riwayat agar status dan akses produk mudah ditemukan.
-            </p>
-        </div>
+        </main>
     </div>
 </div>
 
-<!-- Product Detail Modal -->
-<div id="productDetailModal" class="fixed inset-0 z-50 hidden bg-zinc-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-zinc-900 border border-zinc-800 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
-        <button
-            onclick="closeProductDetail()"
-            class="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors"
-            aria-label="Tutup detail produk"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+{{-- Product Detail Modal --}}
+<div id="productDetailModal" class="fixed inset-0 z-50 hidden bg-neutral-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-10 shadow-2xl relative">
+        <button onclick="closeProductDetail()" class="absolute top-5 right-5 text-neutral-400 hover:text-neutral-900 bg-neutral-100 hover:bg-neutral-200 rounded-lg p-2 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
             </svg>
         </button>
 
-        <div class="grid grid-cols-1 md:grid-cols-[0.95fr_1.05fr] gap-8">
-            <div>
-                <div class="relative w-full aspect-[16/10] overflow-hidden rounded-lg bg-zinc-950 border border-zinc-800">
-                    <img id="detailProductImage" src="" alt="" class="w-full h-full object-cover object-center">
-                </div>
-
-                <div class="mt-5 grid grid-cols-2 gap-3">
-                    <div class="bg-zinc-950 border border-zinc-800 rounded-lg p-4">
-                        <p class="text-[10px] tracking-widest uppercase text-zinc-500 font-semibold">Harga</p>
-                        <p id="detailProductPrice" class="text-sm font-semibold text-white mt-1"></p>
-                    </div>
-                    <div class="bg-zinc-950 border border-zinc-800 rounded-lg p-4">
-                        <p class="text-[10px] tracking-widest uppercase text-zinc-500 font-semibold">Format</p>
-                        <p id="detailProductFormat" class="text-xs text-zinc-300 mt-1 leading-relaxed"></p>
-                    </div>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-8 mt-2">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl bg-neutral-100 border border-neutral-100">
+                <img id="detailProductImage" src="" alt="" class="w-full h-full object-cover">
             </div>
 
-            <div class="pr-6 md:pr-8">
-                <span class="text-[10px] tracking-[0.25em] uppercase text-zinc-500 font-semibold">Detail Produk</span>
-                <h3 id="detailProductName" class="text-2xl font-light text-white tracking-wide mt-2 mb-4"></h3>
-                <p id="detailProductDescription" class="text-zinc-400 text-xs leading-relaxed font-light"></p>
+            <div class="flex flex-col">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-500 mb-2">Digital Asset</span>
+                <h3 id="detailProductName" class="text-2xl font-bold text-neutral-900 tracking-tight leading-tight mb-3"></h3>
+                <p id="detailProductPrice" class="text-xl font-bold text-blue-600 mb-5"></p>
+                <p id="detailProductDescription" class="text-neutral-600 text-sm leading-relaxed mb-6"></p>
 
-                <div class="mt-7 border-t border-zinc-800 pt-6">
-                    <h4 class="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-4">Yang Anda Dapatkan</h4>
+                <div class="bg-neutral-50 border border-neutral-200 rounded-xl p-5 mb-6">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-3">Termasuk:</h4>
                     <ul id="detailProductBenefits" class="space-y-3"></ul>
+                    <div class="mt-4 pt-4 border-t border-neutral-200 flex items-center justify-between">
+                        <span class="text-xs text-neutral-500">Format:</span>
+                        <span id="detailProductFormat" class="text-xs font-bold text-neutral-700 bg-white px-2.5 py-1 rounded-md border border-neutral-200"></span>
+                    </div>
                 </div>
 
-                <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                <div class="mt-auto flex gap-3">
                     @auth
-                        <button
-                            type="button"
-                            onclick="continueToCheckout()"
-                            class="flex-1 bg-zinc-50 hover:bg-zinc-200 text-zinc-950 text-xs font-semibold py-3.5 px-5 rounded-lg tracking-widest transition-all duration-200 uppercase"
-                        >
-                            Lanjut Checkout
+                        <button type="button" onclick="continueToCheckout()" class="flex-1 btn-primary py-3.5 text-sm font-bold">
+                            Beli Sekarang
                         </button>
                     @else
-                        <a
-                            href="{{ route('login') }}"
-                            class="flex-1 text-center bg-zinc-50 hover:bg-zinc-200 text-zinc-950 text-xs font-semibold py-3.5 px-5 rounded-lg tracking-widest transition-all duration-200 uppercase"
-                        >
-                            Login untuk Checkout
+                        <a href="{{ route('login') }}" class="flex-1 text-center btn-primary py-3.5 text-sm font-bold">
+                            Login untuk Membeli
                         </a>
                     @endauth
-
-                    <button
-                        type="button"
-                        onclick="closeProductDetail()"
-                        class="flex-1 bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-semibold py-3.5 px-5 rounded-lg border border-zinc-800 tracking-widest transition-all duration-200 uppercase"
-                    >
-                        Kembali ke Katalog
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Checkout Modal -->
-<div id="checkoutModal" class="fixed inset-0 z-50 hidden bg-zinc-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-zinc-900 border border-zinc-800 rounded-lg max-w-md w-full p-8 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
-        <!-- Close Button -->
-        <button 
-            onclick="closeCheckoutModal()" 
-            class="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+{{-- Checkout Modal --}}
+<div id="checkoutModal" class="fixed inset-0 z-50 hidden bg-neutral-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white border border-neutral-200 rounded-2xl max-w-md w-full p-8 shadow-2xl relative">
+        <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-neutral-400 hover:text-neutral-900 bg-neutral-100 hover:bg-neutral-200 rounded-lg p-2 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
             </svg>
         </button>
 
-        <!-- Product Summary -->
-        <div class="mb-6">
-            <span class="text-[10px] tracking-widest uppercase text-zinc-500 font-semibold">Anda Membeli</span>
-            <h3 id="modalProductName" class="text-lg font-medium text-white tracking-wide mt-1"></h3>
-            <p id="modalProductPrice" class="text-sm font-semibold text-zinc-400 mt-1"></p>
+        <div class="mb-6 text-center">
+            <h3 class="text-xl font-bold text-neutral-900 mb-1">Checkout</h3>
+            <p class="text-sm text-neutral-500">Lengkapi detail pesanan Anda</p>
         </div>
 
-        <hr class="border-zinc-800 my-6">
+        <div class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 mb-6 flex items-center justify-between">
+            <div class="max-w-[65%]">
+                <p class="text-[10px] text-neutral-400 mb-0.5 font-bold uppercase tracking-widest">Item</p>
+                <p id="modalProductName" class="text-sm font-bold text-neutral-900 truncate"></p>
+            </div>
+            <div class="text-right">
+                <p class="text-[10px] text-neutral-400 mb-0.5 font-bold uppercase tracking-widest">Total</p>
+                <p id="modalProductPrice" class="text-sm font-bold text-blue-600"></p>
+            </div>
+        </div>
 
-        <!-- Form -->
-        <form action="{{ route('checkout') }}" method="POST" class="space-y-5">
+        <form action="{{ route('checkout') }}" method="POST" class="space-y-4">
             @csrf
             <input type="hidden" name="product_id" id="modalProductId">
 
             <div>
-                <label for="customer_name" class="block text-[10px] tracking-wider uppercase text-zinc-400 font-semibold mb-2">Nama Lengkap</label>
-                <input 
-                    type="text" 
-                    name="customer_name" 
-                    id="customer_name" 
-                    value="{{ auth()->user()->name ?? old('customer_name') }}"
-                    required 
-                    placeholder="Contoh: John Doe" 
-                    class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 transition-colors"
-                >
+                <label for="customer_name" class="block text-xs font-bold text-neutral-700 mb-1.5">Nama Lengkap</label>
+                <input type="text" name="customer_name" id="customer_name" value="{{ auth()->user()->name ?? old('customer_name') }}" required placeholder="John Doe" class="input-clean bg-neutral-50 border-neutral-200 text-sm w-full">
             </div>
 
             <div>
-                <label for="customer_email" class="block text-[10px] tracking-wider uppercase text-zinc-400 font-semibold mb-2">Email Address</label>
-                <input 
-                    type="email" 
-                    name="customer_email" 
-                    id="customer_email" 
-                    value="{{ auth()->user()->email ?? old('customer_email') }}"
-                    required 
-                    placeholder="Contoh: john@example.com" 
-                    class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 transition-colors"
-                >
+                <label for="customer_email" class="block text-xs font-bold text-neutral-700 mb-1.5">Email</label>
+                <input type="email" name="customer_email" id="customer_email" value="{{ auth()->user()->email ?? old('customer_email') }}" required placeholder="john@example.com" class="input-clean bg-neutral-50 border-neutral-200 text-sm w-full">
             </div>
 
-            <div>
-                <label for="customer_phone" class="block text-[10px] tracking-wider uppercase text-zinc-400 font-semibold mb-2">Nomor Telepon (Optional)</label>
-                <input 
-                    type="text" 
-                    name="customer_phone" 
-                    id="customer_phone" 
-                    placeholder="Contoh: 08123456789" 
-                    class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 transition-colors"
-                >
-            </div>
-
-            <div class="pt-4">
-                <button 
-                    type="submit" 
-                    class="w-full bg-zinc-50 hover:bg-zinc-200 text-zinc-950 text-xs font-semibold py-3.5 rounded-lg tracking-widest transition-all duration-200 uppercase"
-                >
-                    Lanjutkan Pembayaran
-                </button>
+            <div class="pt-3">
+                <button type="submit" class="w-full btn-primary py-3.5 text-sm font-bold">Bayar & Unduh</button>
             </div>
         </form>
     </div>
@@ -259,19 +246,12 @@
     let selectedProduct = null;
 
     function rupiah(price) {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            maximumFractionDigits: 0
-        }).format(price);
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(price);
     }
 
     function openProductDetail(id) {
-        selectedProduct = products.find((product) => String(product.id) === String(id));
-
-        if (!selectedProduct) {
-            return;
-        }
+        selectedProduct = products.find((p) => String(p.id) === String(id));
+        if (!selectedProduct) return;
 
         document.getElementById('detailProductImage').src = selectedProduct.imageUrl;
         document.getElementById('detailProductImage').alt = selectedProduct.name;
@@ -282,31 +262,25 @@
 
         const benefits = document.getElementById('detailProductBenefits');
         benefits.innerHTML = '';
-
-        selectedProduct.benefits.forEach((benefit) => {
-            const item = document.createElement('li');
-            item.className = 'flex items-start gap-3 text-xs text-zinc-400 leading-relaxed';
-            item.innerHTML = '<span class="mt-1 h-1.5 w-1.5 rounded-full bg-zinc-500 shrink-0"></span><span></span>';
-            item.querySelector('span:last-child').innerText = benefit;
-            benefits.appendChild(item);
+        selectedProduct.benefits.forEach((b) => {
+            const li = document.createElement('li');
+            li.className = 'flex items-start gap-3 text-sm text-neutral-600 leading-relaxed';
+            li.innerHTML = '<svg class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span></span>';
+            li.querySelector('span:last-child').innerText = b;
+            benefits.appendChild(li);
         });
 
-        const modal = document.getElementById('productDetailModal');
-        modal.classList.remove('hidden');
+        document.getElementById('productDetailModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     }
 
     function closeProductDetail() {
-        const modal = document.getElementById('productDetailModal');
-        modal.classList.add('hidden');
+        document.getElementById('productDetailModal').classList.add('hidden');
         document.body.style.overflow = '';
     }
 
     function continueToCheckout() {
-        if (!selectedProduct) {
-            return;
-        }
-
+        if (!selectedProduct) return;
         closeProductDetail();
         openCheckoutModal(selectedProduct.id, selectedProduct.name, selectedProduct.price);
     }
@@ -315,29 +289,16 @@
         document.getElementById('modalProductId').value = id;
         document.getElementById('modalProductName').innerText = name;
         document.getElementById('modalProductPrice').innerText = rupiah(price);
-        
-        const modal = document.getElementById('checkoutModal');
-        modal.classList.remove('hidden');
+        document.getElementById('checkoutModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     }
 
     function closeCheckoutModal() {
-        const modal = document.getElementById('checkoutModal');
-        modal.classList.add('hidden');
+        document.getElementById('checkoutModal').classList.add('hidden');
         document.body.style.overflow = '';
     }
 
-    // Close on click outside modal content
-    document.getElementById('productDetailModal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeProductDetail();
-        }
-    });
-
-    document.getElementById('checkoutModal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeCheckoutModal();
-        }
-    });
+    document.getElementById('productDetailModal').addEventListener('click', function(e) { if (e.target === this) closeProductDetail(); });
+    document.getElementById('checkoutModal').addEventListener('click', function(e) { if (e.target === this) closeCheckoutModal(); });
 </script>
 @endsection
