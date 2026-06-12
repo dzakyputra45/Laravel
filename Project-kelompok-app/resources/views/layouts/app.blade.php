@@ -20,9 +20,6 @@
 
             <!-- Logo -->
             <a href="{{ auth()->user()?->is_admin ? route('admin.dashboard') : route('dashboard') }}" class="flex items-center gap-2.5 group">
-                <div class="h-8 w-8 rounded-lg bg-neutral-900 flex items-center justify-center shadow-md shadow-neutral-900/10 group-hover:shadow-neutral-900/30 transition-shadow">
-                    <span class="text-white font-bold text-sm">K</span>
-                </div>
                 <span class="font-bold text-sm tracking-wide text-neutral-900">Karsa<span class="text-neutral-500">Studio</span></span>
             </a>
 
