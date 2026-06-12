@@ -35,32 +35,54 @@
     </div>
 
     {{-- 2-Column Layout --}}
-    <div class="flex flex-col lg:flex-row gap-8 animate-fade-up-d1">
+    <form method="GET" action="{{ route('store') }}" id="filterForm" class="flex flex-col lg:flex-row gap-8 animate-fade-up-d1">
+
+        {{-- Preserve search from header --}}
+        @if(request('search'))
+            <input type="hidden" name="search" value="{{ request('search') }}">
+        @endif
 
         {{-- Sidebar --}}
         <aside class="w-full lg:w-64 shrink-0">
             <div class="clean-card p-6 sticky top-24 bg-white border-neutral-100 shadow-sm">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-sm font-bold text-neutral-900">Filter</h3>
-                    <button class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-neutral-900 transition-colors">Reset</button>
+                    <a href="{{ route('store') }}" class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-neutral-900 transition-colors">Reset</a>
                 </div>
 
                 {{-- Kategori --}}
                 <div class="mb-8">
                     <h4 class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-4">Kategori</h4>
                     <ul class="space-y-2.5">
-                        @foreach(['Semua Produk', 'Wallpapers', 'Icon Packs', 'Templates', 'UI Kits'] as $idx => $cat)
+                        {{-- All Products --}}
+                        <li>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" name="category" value="" {{ !request('category') ? 'checked' : '' }} onchange="this.form.submit()" class="hidden peer">
+                                <div class="w-4 h-4 rounded border flex items-center justify-center transition-all
+                                    {{ !request('category') ? 'border-neutral-900 bg-neutral-900' : 'border-neutral-300 bg-transparent group-hover:border-neutral-500' }}">
+                                    @if(!request('category'))
+                                        <svg class="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    @endif
+                                </div>
+                                <span class="text-sm {{ !request('category') ? 'text-neutral-900 font-semibold' : 'text-neutral-600 group-hover:text-neutral-900' }} transition-colors">Semua Produk</span>
+                            </label>
+                        </li>
+                        {{-- Dynamic Categories --}}
+                        @foreach($categories as $cat)
                             <li>
                                 <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="radio" name="category" value="{{ $cat }}" {{ request('category') === $cat ? 'checked' : '' }} onchange="this.form.submit()" class="hidden peer">
                                     <div class="w-4 h-4 rounded border flex items-center justify-center transition-all
-                                        {{ $idx === 0 ? 'border-neutral-900 bg-neutral-900' : 'border-neutral-300 bg-transparent group-hover:border-neutral-500' }}">
-                                        @if($idx === 0)
+                                        {{ request('category') === $cat ? 'border-neutral-900 bg-neutral-900' : 'border-neutral-300 bg-transparent group-hover:border-neutral-500' }}">
+                                        @if(request('category') === $cat)
                                             <svg class="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                             </svg>
                                         @endif
                                     </div>
-                                    <span class="text-sm {{ $idx === 0 ? 'text-neutral-900 font-semibold' : 'text-neutral-600 group-hover:text-neutral-900' }} transition-colors">{{ $cat }}</span>
+                                    <span class="text-sm {{ request('category') === $cat ? 'text-neutral-900 font-semibold' : 'text-neutral-600 group-hover:text-neutral-900' }} transition-colors">{{ $cat }}</span>
                                 </label>
                             </li>
                         @endforeach
@@ -71,13 +93,13 @@
                 <div class="mb-8">
                     <h4 class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-4">Harga</h4>
                     <div class="flex items-center gap-2">
-                        <input type="text" placeholder="Min" class="input-clean text-xs w-full py-2 bg-neutral-50 border-neutral-200">
+                        <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="Min" class="input-clean text-xs w-full py-2 bg-neutral-50 border-neutral-200">
                         <span class="text-neutral-400 text-xs">—</span>
-                        <input type="text" placeholder="Max" class="input-clean text-xs w-full py-2 bg-neutral-50 border-neutral-200">
+                        <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="Max" class="input-clean text-xs w-full py-2 bg-neutral-50 border-neutral-200">
                     </div>
                 </div>
 
-                <button class="w-full btn-primary text-xs py-2.5 font-bold">Terapkan</button>
+                <button type="submit" class="w-full btn-primary text-xs py-2.5 font-bold">Terapkan</button>
             </div>
         </aside>
 
@@ -85,67 +107,71 @@
         <main class="flex-1">
             <div class="flex items-center justify-between mb-6 pb-4 border-b border-neutral-200">
                 <span class="text-xs font-medium text-neutral-500">{{ $products->count() }} produk</span>
-                <select class="bg-transparent text-neutral-900 text-xs font-bold outline-none cursor-pointer">
-                    <option value="newest">Terbaru</option>
-                    <option value="popular">Terpopuler</option>
-                    <option value="price_asc">Harga ↑</option>
-                    <option value="price_desc">Harga ↓</option>
+                <select name="sort" onchange="document.getElementById('filterForm').submit()" class="bg-transparent text-neutral-900 text-xs font-bold outline-none cursor-pointer">
+                    <option value="newest" {{ request('sort', 'newest') === 'newest' ? 'selected' : '' }}>Terbaru</option>
+                    <option value="popular" {{ request('sort') === 'popular' ? 'selected' : '' }}>Terpopuler</option>
+                    <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Harga ↑</option>
+                    <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Harga ↓</option>
                 </select>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-                @foreach($products as $idx => $product)
-                    <div class="group clean-card overflow-hidden flex flex-col bg-white border-neutral-100 shadow-sm">
-                        <div class="relative aspect-[4/3] overflow-hidden bg-neutral-100 border-b border-neutral-100 cursor-pointer" onclick="openProductDetail('{{ $product->id }}')">
-                            <img src="{{ asset($product->image_path) }}" alt="{{ $product->name }}"
-                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+            @if($products->isEmpty())
+                <div class="text-center py-20">
+                    <div class="text-5xl mb-4">🔍</div>
+                    <h3 class="text-lg font-bold text-neutral-900 mb-2">Tidak ada produk ditemukan</h3>
+                    <p class="text-sm text-neutral-500 mb-6">Coba ubah filter atau kata kunci pencarian Anda.</p>
+                    <a href="{{ route('store') }}" class="btn-outline text-xs px-6 py-2.5 font-bold">Reset Filter</a>
+                </div>
+            @else
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                    @foreach($products as $idx => $product)
+                        <div class="group clean-card overflow-hidden flex flex-col bg-white border-neutral-100 shadow-sm">
+                            <div class="relative aspect-[4/3] overflow-hidden bg-neutral-100 border-b border-neutral-100 cursor-pointer" onclick="openProductDetail('{{ $product->id }}')">
+                                <img src="{{ asset($product->image_path) }}" alt="{{ $product->name }}"
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
 
-                            @if($idx % 3 === 0)
-                                <span class="absolute top-3 left-3 bg-neutral-900 text-white px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide shadow-md">-20%</span>
-                            @elseif($idx % 4 === 0)
-                                <span class="absolute top-3 left-3 bg-blue-600 text-white px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide">HOT</span>
-                            @endif
+                                @if($product->category)
+                                    <span class="absolute top-3 left-3 bg-neutral-900/80 text-white px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide shadow-md backdrop-blur-sm">{{ $product->category }}</span>
+                                @endif
 
-                            {{-- Quick View Overlay --}}
-                            <div class="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                                <span class="bg-neutral-900 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform">Quick View</span>
-                            </div>
-                        </div>
-
-                        <div class="p-5 flex-grow flex flex-col justify-between">
-                            <div>
-                                <h2 class="text-sm font-bold text-neutral-900 group-hover:text-blue-600 transition-colors line-clamp-1 cursor-pointer" onclick="openProductDetail('{{ $product->id }}')">
-                                    {{ $product->name }}
-                                </h2>
-                                <div class="flex items-center gap-0.5 mt-2 mb-3">
-                                    @for($i=0; $i<5; $i++)
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 {{ $i < 4 || ($i==4 && $idx%2==0) ? 'text-amber-400' : 'text-neutral-200' }}" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
-                                    @endfor
-                                    <span class="text-[10px] font-medium text-neutral-400 ml-1">({{ rand(12, 145) }})</span>
+                                {{-- Quick View Overlay --}}
+                                <div class="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                                    <span class="bg-neutral-900 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform">Quick View</span>
                                 </div>
                             </div>
 
-                            <div class="flex items-end justify-between mt-3">
+                            <div class="p-5 flex-grow flex flex-col justify-between">
                                 <div>
-                                    @if($idx % 3 === 0)
-                                        <del class="text-[11px] text-neutral-400">Rp {{ number_format($product->price * 1.2, 0, ',', '.') }}</del>
-                                    @endif
-                                    <div class="text-sm font-bold text-neutral-900">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                                    <h2 class="text-sm font-bold text-neutral-900 group-hover:text-blue-600 transition-colors line-clamp-1 cursor-pointer" onclick="openProductDetail('{{ $product->id }}')">
+                                        {{ $product->name }}
+                                    </h2>
+                                    <div class="flex items-center gap-0.5 mt-2 mb-3">
+                                        @for($i=0; $i<5; $i++)
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 {{ $i < 4 || ($i==4 && $idx%2==0) ? 'text-amber-400' : 'text-neutral-200' }}" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        @endfor
+                                        <span class="text-[10px] font-medium text-neutral-400 ml-1">({{ rand(12, 145) }})</span>
+                                    </div>
                                 </div>
-                                <button class="h-9 w-9 rounded-lg bg-neutral-50 border border-neutral-200 flex items-center justify-center text-neutral-600 hover:bg-neutral-900 hover:border-neutral-900 hover:text-white transition-all" aria-label="Add to cart">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                                    </svg>
-                                </button>
+
+                                <div class="flex items-end justify-between mt-3">
+                                    <div>
+                                        <div class="text-sm font-bold text-neutral-900">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                                    </div>
+                                    <button onclick="addToCart(event, '{{ $product->id }}', '{{ addslashes($product->name) }}', {{ $product->price }}, '{{ asset($product->image_path) }}')" class="h-9 w-9 rounded-lg bg-neutral-50 border border-neutral-200 flex items-center justify-center text-neutral-600 hover:bg-neutral-900 hover:border-neutral-900 hover:text-white transition-all" aria-label="Add to cart">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
+            @endif
         </main>
-    </div>
+    </form>
 </div>
 
 {{-- Product Detail Modal --}}

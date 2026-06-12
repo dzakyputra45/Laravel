@@ -28,10 +28,53 @@ class OrderController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        $products = Product::all();
+        $query = Product::query();
+
+        // Search by name or description
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by category
+        if ($category = $request->input('category')) {
+            $query->where('category', $category);
+        }
+
+        // Filter by price range
+        if ($minPrice = $request->input('min_price')) {
+            $query->where('price', '>=', $minPrice);
+        }
+        if ($maxPrice = $request->input('max_price')) {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        // Sort
+        switch ($request->input('sort', 'newest')) {
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'popular':
+                $query->withCount('orderItems')->orderBy('order_items_count', 'desc');
+                break;
+            case 'newest':
+            default:
+                $query->latest();
+                break;
+        }
+
+        $products = $query->get();
         $midtransConfigured = $this->midtrans->isConfigured();
+
+        // Get all available categories for the filter sidebar
+        $categories = Product::whereNotNull('category')->distinct()->pluck('category')->sort()->values();
         
-        return view('store', compact('products', 'midtransConfigured'));
+        return view('store', compact('products', 'midtransConfigured', 'categories'));
     }
 
     /**

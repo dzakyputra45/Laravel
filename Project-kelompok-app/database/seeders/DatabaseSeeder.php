@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'mesa-wallpaper-pack'],
             [
                 'name' => 'Mesa Wallpaper Pack',
+                'category' => 'Wallpapers',
                 'description' => 'A curation of 12 ultra-high resolution abstract warm gradients and fluid 8K wallpaper designs. Designed to induce focus and visual harmony on your desktop, laptop, and mobile screens.',
                 'price' => 29000.00,
                 'image_path' => 'images/mesa_wallpaper.png',
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'zen-monolithic-icons'],
             [
                 'name' => 'Zen Monolithic Icons',
+                'category' => 'Icon Packs',
                 'description' => 'Over 240+ carefully crafted minimalist monochrome app icons for iOS, Android, and macOS. Includes dark, light, and wireframe variants alongside matching home screen widgets.',
                 'price' => 49000.00,
                 'image_path' => 'images/zen_icons.png',
@@ -50,6 +52,7 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'aura-notion-dashboard'],
             [
                 'name' => 'Aura Notion Dashboard',
+                'category' => 'Templates',
                 'description' => 'A beautifully unified, premium dark-mode productivity workspace for Notion. Organize your projects, tracking systems, quick thoughts, journal logs, and weekly objectives in one integrated dashboard.',
                 'price' => 79000.00,
                 'image_path' => 'images/aura_notion.png',
@@ -61,6 +64,7 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'focus-journal-pdf'],
             [
                 'name' => 'Focus Journal (PDF)',
+                'category' => 'Templates',
                 'description' => 'A printable 30-day structural daily log and journal designed around focus, mindfulness, and intentional reflection. Features premium typography, clean layouts, and guided prompts.',
                 'price' => 19000.00,
                 'image_path' => 'images/focus_journal.png',

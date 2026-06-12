@@ -44,6 +44,16 @@
                 </div>
 
                 <div>
+                    <label for="category" class="block text-xs font-bold text-neutral-700 mb-1.5">Kategori</label>
+                    <select name="category" id="category" class="w-full input-clean bg-neutral-50 border-neutral-200 text-sm">
+                        <option value="">— Pilih Kategori —</option>
+                        @foreach(['Wallpapers', 'Icon Packs', 'Templates', 'UI Kits'] as $cat)
+                            <option value="{{ $cat }}" {{ old('category') === $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
                     <label for="description" class="block text-xs font-bold text-neutral-700 mb-1.5">Deskripsi Produk</label>
                     <textarea name="description" id="description" rows="5" required placeholder="Jelaskan isi produk digital dan manfaatnya." class="w-full input-clean bg-neutral-50 border-neutral-200 text-sm">{{ old('description') }}</textarea>
                 </div>

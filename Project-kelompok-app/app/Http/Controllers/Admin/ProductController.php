@@ -57,6 +57,7 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255', 'unique:products,slug'],
+            'category' => ['nullable', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable', 'required_without:image_path', 'image', 'max:2048'],
@@ -75,6 +76,7 @@ class ProductController extends Controller
         Product::create([
             'name' => $data['name'],
             'slug' => $slug,
+            'category' => $data['category'] ?? null,
             'description' => $data['description'],
             'price' => $data['price'],
             'image_path' => $imagePath,
@@ -100,6 +102,7 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255', 'unique:products,slug,' . $product->id],
+            'category' => ['nullable', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable', 'image', 'max:2048'],
@@ -118,6 +121,7 @@ class ProductController extends Controller
         $product->update([
             'name' => $data['name'],
             'slug' => $slug,
+            'category' => $data['category'] ?? $product->category,
             'description' => $data['description'],
             'price' => $data['price'],
             'image_path' => $imagePath,
