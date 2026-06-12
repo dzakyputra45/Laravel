@@ -16,7 +16,7 @@
                 Dashboard <span class="text-neutral-500">Admin</span>
             </h1>
             <p class="text-neutral-500 text-sm mt-3 max-w-lg">
-                Pusat kontrol admin Karsa Studio. Kelola katalog, produk, dan lihat order user.
+                Pusat kontrol admin Karsa Studio Untuk PWF. Kelola katalog, produk, dan lihat order user.
             </p>
         </div>
     </div>
