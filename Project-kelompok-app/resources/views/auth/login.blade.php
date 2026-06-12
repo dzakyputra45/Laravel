@@ -6,11 +6,7 @@
 <div class="max-w-6xl mx-auto px-6 py-20">
     <div class="max-w-sm mx-auto animate-fade-up">
         <div class="mb-10 text-center">
-            <div class="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-neutral-900 shadow-md mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-            </div>
+
             <h1 class="text-3xl font-bold tracking-tight mb-2 text-neutral-900">Selamat Datang</h1>
             <p class="text-neutral-500 text-sm">Masuk untuk melanjutkan checkout dan riwayat order.</p>
         </div>
